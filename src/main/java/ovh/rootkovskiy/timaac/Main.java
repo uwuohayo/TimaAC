@@ -15,7 +15,9 @@ public final class Main extends JavaPlugin {
         return instance;
     }
 
-    public static List<Player> notVerifedPlayers = new ArrayList<>();
+    public final List<Player> notVerifiedPlayers = new ArrayList<>();
+
+    public final EventsListener listener = new EventsListener();
 
     @Override
     public void onEnable() {
