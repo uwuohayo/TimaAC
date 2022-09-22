@@ -23,7 +23,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         instance = this;
-        Bukkit.getPluginManager().registerEvents(new EventsListener(), this);
+        Bukkit.getPluginManager().registerEvents(listener, this);
         Bukkit.getPluginCommand("timaac").setExecutor(new TimaACCommand());
         System.out.println(ConsoleUtils.ANSI_GREEN + "#-#-#-#-#-#-#-#-#" + ConsoleUtils.ANSI_RESET);
         System.out.println(ConsoleUtils.ANSI_CYAN + "TimaAC "+getDescription().getVersion()+" Loaded and Enabled!" + ConsoleUtils.ANSI_RESET);

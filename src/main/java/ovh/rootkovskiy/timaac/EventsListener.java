@@ -18,7 +18,7 @@ public class EventsListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Player player : Main.notVerifedPlayers) {
+                for (Player player : Main.getInstance().notVerifiedPlayers) {
                     player.sendMessage(ColorUtils.format(Main.getInstance().getConfig().getString("chatmessage")));
                 }
             }
@@ -31,7 +31,7 @@ public class EventsListener implements Listener {
         Player player = event.getPlayer();
 
         if (!(player.hasPlayedBefore())) {
-            Main.notVerifedPlayers.add(player);
+            Main.getInstance().notVerifiedPlayers.add(player);
 
             World world = Bukkit.getWorld(Main.getInstance().getConfig().getString("world"));
             int x = Main.getInstance().getConfig().getInt("x");
@@ -56,9 +56,9 @@ public class EventsListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Main.notVerifedPlayers.contains(player)) {
+        if (Main.getInstance().notVerifiedPlayers.contains(player)) {
             if (event.getMessage().contains(Main.getInstance().getConfig().getString("confirm-message"))) {
-                Main.notVerifedPlayers.remove(player);
+                Main.getInstance().notVerifiedPlayers.remove(player);
                 GameMode gamemode = GameMode.valueOf(Main.getInstance().getConfig().getString("checked-gm"));
                 Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),() -> player.setGameMode(gamemode), 0L);
                 player.sendMessage(ColorUtils.format(Main.getInstance().getConfig().getString("verification-passed")));
@@ -73,7 +73,7 @@ public class EventsListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Main.notVerifedPlayers.contains(player)) {
+        if (Main.getInstance().notVerifiedPlayers.contains(player)) {
             event.setCancelled(true);
         }
     }
