@@ -60,7 +60,7 @@ public class EventsListener implements Listener {
             if (event.getMessage().contains(Main.getInstance().getConfig().getString("confirm-message"))) {
                 Main.getInstance().notVerifiedPlayers.remove(player);
                 GameMode gamemode = GameMode.valueOf(Main.getInstance().getConfig().getString("checked-gm"));
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),() -> player.setGameMode(gamemode), 0L);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> player.setGameMode(gamemode), 0L);
                 player.sendMessage(ColorUtils.format(Main.getInstance().getConfig().getString("verification-passed")));
             } else {
                 event.setCancelled(true);
