@@ -29,4 +29,9 @@ fadein: 10
 stay: 70
 fadeout: 20
 #
+#устанавливаемый гейммод для игрока не прошедшего проверку
+uncheked-gm: ADVENTURE
+#устанавливаемый гейммод для игрока прошедшего проверку
+checked-gm: SURVIVAL
+#
 #thanks for use my plugin <3

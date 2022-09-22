@@ -1,7 +1,11 @@
 package ovh.rootkovskiy.timaac;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Main extends JavaPlugin {
 
@@ -11,11 +15,14 @@ public final class Main extends JavaPlugin {
         return instance;
     }
 
+    public static List<Player> notVerifedPlayers = new ArrayList<>();
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
         instance = this;
         Bukkit.getPluginManager().registerEvents(new EventsListener(), this);
+        Bukkit.getPluginCommand("timaac").setExecutor(new TimaACCommand());
         System.out.println(ConsoleUtils.ANSI_GREEN + "#-#-#-#-#-#-#-#-#" + ConsoleUtils.ANSI_RESET);
         System.out.println(ConsoleUtils.ANSI_CYAN + "TimaAC "+getDescription().getVersion()+" Loaded and Enabled!" + ConsoleUtils.ANSI_RESET);
         System.out.println(ConsoleUtils.ANSI_CYAN + "MC Version: "+ getServer().getBukkitVersion() + ConsoleUtils.ANSI_RESET);

@@ -8,21 +8,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EventsListener implements Listener {
-
-    private final List<Player> notVerifedPlayer = new ArrayList<>();
 
     public EventsListener() {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Player player : notVerifedPlayer) {
+                for (Player player : Main.notVerifedPlayers) {
                     player.sendMessage(ColorUtils.format(Main.getInstance().getConfig().getString("chatmessage")));
                 }
             }
@@ -35,7 +31,7 @@ public class EventsListener implements Listener {
         Player player = event.getPlayer();
 
         if (!(player.hasPlayedBefore())) {
-            notVerifedPlayer.add(player);
+            Main.notVerifedPlayers.add(player);
 
             World world = Bukkit.getWorld(Main.getInstance().getConfig().getString("world"));
             int x = Main.getInstance().getConfig().getInt("x");
@@ -44,7 +40,8 @@ public class EventsListener implements Listener {
             Location checkLocation = new Location(world, x, y, z);
 
             player.teleport(checkLocation);
-            player.setGameMode(GameMode.ADVENTURE);
+            GameMode gamemode = GameMode.valueOf(Main.getInstance().getConfig().getString("uncheked-gm"));
+            player.setGameMode(gamemode);
             player.sendTitle(ColorUtils.format(Main.getInstance().getConfig().getString("title")),
                     ColorUtils.format(Main.getInstance().getConfig().getString("subtitle")),
                     Main.getInstance().getConfig().getInt("fadein"),
@@ -59,14 +56,25 @@ public class EventsListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (notVerifedPlayer.contains(player)) {
+        if (Main.notVerifedPlayers.contains(player)) {
             if (event.getMessage().contains(Main.getInstance().getConfig().getString("confirm-message"))) {
-                notVerifedPlayer.remove(player);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),() -> player.setGameMode(GameMode.SURVIVAL), 0L);
+                Main.notVerifedPlayers.remove(player);
+                GameMode gamemode = GameMode.valueOf(Main.getInstance().getConfig().getString("checked-gm"));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),() -> player.setGameMode(gamemode), 0L);
                 player.sendMessage(ColorUtils.format(Main.getInstance().getConfig().getString("verification-passed")));
             } else {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onChatCommandSend(PlayerCommandPreprocessEvent event) {
+
+        Player player = event.getPlayer();
+
+        if (Main.notVerifedPlayers.contains(player)) {
+            event.setCancelled(true);
         }
     }
 }

@@ -4,3 +4,5 @@ main: ovh.rootkovskiy.timaac.Main
 authors: [ timurroot ]
 description: Simple AC plugin
 website: www.rootkovskiy.ovh
+commands:
+  timaac: {}
